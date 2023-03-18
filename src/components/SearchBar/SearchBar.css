@@ -1,0 +1,13 @@
+.search-bar {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.search-bar__input {
+  width: 100%;
+}
+
+.search-bar__button {
+  width: auto;
+}
