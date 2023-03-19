@@ -4,6 +4,9 @@ import RepositoryList from "./components/RepositoryList/RepositoryList";
 import SearchBar from "./components/SearchBar/SearchBar";
 import { GHSearchRepositoryResponse, Repository } from "./types";
 
+const GH_REPO_API_URL = import.meta.env.VITE_GH_REPO_API_URL;
+const THROTTLE_LIMIT_SECONDS = import.meta.env.VITE_THROTTLE_LIMIT_SECONDS;
+
 const PAGE_SIZE = 10;
 const THROTTLE_LIMIT_SECONDS = 1000;
 
@@ -17,9 +20,7 @@ const App = () => {
 
   const fetchRepositories = (page: number) => {
     if (Date.now() - lastFetchTime.current >= THROTTLE_LIMIT_SECONDS) {
-      fetch(
-        `https://api.github.com/search/repositories?q=${query}&page=${page}&per_page=10`
-      )
+      fetch(`${GH_REPO_API_URL}?q=${query}&page=${page}&per_page=10`)
         .then((response) => {
           if (response.status !== 200) throw Error();
           return response.json();
