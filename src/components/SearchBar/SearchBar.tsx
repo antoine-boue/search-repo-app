@@ -30,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
         value={searchInput}
         onChange={handleSearchInputChange}
       />
-      <button id="searchButton" className="search" type="submit">
+      <button id="searchButton" className="search-bar__button" type="submit">
         Search
       </button>
     </form>
