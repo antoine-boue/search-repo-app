@@ -6,7 +6,6 @@ type RepositoryListProps = {
   repositories: Repository[] | null;
   currentQuery: string;
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
   hasError: boolean;
   fetchRepositories: (query: string, page: number) => void;
@@ -17,7 +16,6 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
     currentQuery,
     currentPage,
     totalPages,
-    setCurrentPage,
     repositories,
     hasError,
     fetchRepositories,
@@ -38,7 +36,6 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
       currentQuery={currentQuery}
       currentPage={currentPage}
       totalPages={totalPages}
-      setCurrentPage={setCurrentPage}
       fetchRepositories={fetchRepositories}
     />
   );

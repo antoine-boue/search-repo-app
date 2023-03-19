@@ -1,5 +1,5 @@
 import "./App.css";
-import { FormEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import RepositoryList from "./components/RepositoryList/RepositoryList";
 import SearchBar from "./components/SearchBar/SearchBar";
 import { GHSearchRepositoryResponse, Repository } from "./types";
@@ -52,7 +52,6 @@ const App = () => {
         repositories={repositories}
         currentQuery={currentQuery}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
         totalPages={totalPages}
         hasError={hasError}
         fetchRepositories={fetchRepositories}

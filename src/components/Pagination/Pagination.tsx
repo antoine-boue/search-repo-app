@@ -4,18 +4,11 @@ type PaginationProps = {
   currentQuery: string;
   currentPage: number;
   totalPages: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   fetchRepositories: (query: string, page: number) => void;
 };
 
 const Pagination: React.FC<PaginationProps> = (props) => {
-  const {
-    currentQuery,
-    currentPage,
-    totalPages,
-    setCurrentPage,
-    fetchRepositories,
-  } = props;
+  const { currentQuery, currentPage, totalPages, fetchRepositories } = props;
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
