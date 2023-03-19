@@ -1,18 +1,25 @@
 import "./pagination.css";
 
 type PaginationProps = {
+  currentQuery: string;
   currentPage: number;
   totalPages: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  fetchRepositories: (page: number) => void;
+  fetchRepositories: (query: string, page: number) => void;
 };
 
 const Pagination: React.FC<PaginationProps> = (props) => {
-  const { currentPage, totalPages, setCurrentPage, fetchRepositories } = props;
+  const {
+    currentQuery,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+    fetchRepositories,
+  } = props;
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      fetchRepositories(newPage);
+      fetchRepositories(currentQuery, newPage);
     }
   };
 

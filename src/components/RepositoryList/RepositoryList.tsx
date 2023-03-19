@@ -3,16 +3,18 @@ import { Repository } from "../../types";
 import Pagination from "../Pagination/Pagination";
 
 type RepositoryListProps = {
+  repositories: Repository[] | null;
+  currentQuery: string;
   currentPage: number;
-  totalPages: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  repositories: Repository[];
+  totalPages: number;
   hasError: boolean;
-  fetchRepositories: (page: number) => void;
+  fetchRepositories: (query: string, page: number) => void;
 };
 
 const RepositoryList: React.FC<RepositoryListProps> = (props) => {
   const {
+    currentQuery,
     currentPage,
     totalPages,
     setCurrentPage,
@@ -24,18 +26,26 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
   if (hasError) {
     return <p className="error">An error happened, please try again soon</p>;
   }
-  if (!repositories.length) {
+  if (!repositories) {
     return null;
   }
+  if (!repositories.length) {
+    return <p>No results for your input, please try something else</p>;
+  }
+
+  const pagination = () => (
+    <Pagination
+      currentQuery={currentQuery}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      setCurrentPage={setCurrentPage}
+      fetchRepositories={fetchRepositories}
+    />
+  );
 
   return (
     <div className="repository-list">
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
-        fetchRepositories={fetchRepositories}
-      />
+      {pagination()}
       <div className="repository-list__header">
         <p className="repository-list__name">Name</p>
         <p className="repository-list__owner">Owner</p>
@@ -55,12 +65,7 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
           </p>
         </a>
       ))}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
-        fetchRepositories={fetchRepositories}
-      />
+      {pagination()}
     </div>
   );
 };

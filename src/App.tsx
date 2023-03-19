@@ -1,5 +1,5 @@
 import "./App.css";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import RepositoryList from "./components/RepositoryList/RepositoryList";
 import SearchBar from "./components/SearchBar/SearchBar";
 import { GHSearchRepositoryResponse, Repository } from "./types";
@@ -8,17 +8,16 @@ const GH_REPO_API_URL = import.meta.env.VITE_GH_REPO_API_URL;
 const THROTTLE_LIMIT_SECONDS = import.meta.env.VITE_THROTTLE_LIMIT_SECONDS;
 
 const PAGE_SIZE = 10;
-const THROTTLE_LIMIT_SECONDS = 1000;
 
 const App = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
-  const [query, setQuery] = useState("");
+  const [repositories, setRepositories] = useState<Repository[] | null>(null);
+  const [currentQuery, setCurrentQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasError, setHasError] = useState(false);
   const lastFetchTime = useRef(Date.now());
 
-  const fetchRepositories = (page: number) => {
+  const fetchRepositories = (query: string, page: number) => {
     if (Date.now() - lastFetchTime.current >= THROTTLE_LIMIT_SECONDS) {
       fetch(`${GH_REPO_API_URL}?q=${query}&page=${page}&per_page=10`)
         .then((response) => {
@@ -27,40 +26,34 @@ const App = () => {
         })
         .then((data: GHSearchRepositoryResponse) => {
           setRepositories(data.items);
-          setTotalPages(Math.ceil(data.total_count / PAGE_SIZE));
+          setCurrentQuery(query);
           setCurrentPage(page);
+          setTotalPages(Math.ceil(data.total_count / PAGE_SIZE));
           setHasError(false);
         })
         .catch(() => {
-          setRepositories([]);
+          setRepositories(null);
+          setCurrentQuery("");
+          setCurrentPage(1);
+          setTotalPages(1);
           setHasError(true);
         });
       lastFetchTime.current = Date.now();
     }
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
-
-  const handleSearch = async (e: FormEvent) => {
-    e.preventDefault();
-    setCurrentPage(1);
-    fetchRepositories(1);
-  };
-
   return (
     <div className="App">
       <SearchBar
-        searchTerm={query}
-        handleInputChange={handleInputChange}
-        handleSearch={handleSearch}
+        currentPage={currentPage}
+        fetchRepositories={fetchRepositories}
       />
       <RepositoryList
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
         repositories={repositories}
+        currentQuery={currentQuery}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
         hasError={hasError}
         fetchRepositories={fetchRepositories}
       />
