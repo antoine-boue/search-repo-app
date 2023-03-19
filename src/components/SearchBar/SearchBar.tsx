@@ -2,12 +2,11 @@ import "./SearchBar.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 type SearchBarProps = {
-  currentPage: number;
   fetchRepositories: (query: string, page: number) => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = (props) => {
-  const { currentPage, fetchRepositories } = props;
+  const { fetchRepositories } = props;
 
   const [searchInput, setSearchInput] = useState("");
 
@@ -18,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchInput) {
-      fetchRepositories(searchInput, currentPage);
+      fetchRepositories(searchInput, 1);
     }
   };
 

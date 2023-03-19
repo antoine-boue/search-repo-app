@@ -51,10 +51,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <SearchBar
-        currentPage={currentPage}
-        fetchRepositories={fetchRepositories}
-      />
+      <SearchBar fetchRepositories={fetchRepositories} />
       <RepositoryList
         repositories={repositories}
         currentQuery={currentQuery}
