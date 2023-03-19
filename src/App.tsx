@@ -8,6 +8,7 @@ const GH_REPO_API_URL = import.meta.env.VITE_GH_REPO_API_URL;
 const THROTTLE_LIMIT_SECONDS = import.meta.env.VITE_THROTTLE_LIMIT_SECONDS;
 
 const PAGE_SIZE = 10;
+const MAX_TOTAL_PAGES = 100;
 
 const App = () => {
   const [repositories, setRepositories] = useState<Repository[] | null>(null);
@@ -28,7 +29,13 @@ const App = () => {
           setRepositories(data.items);
           setCurrentQuery(query);
           setCurrentPage(page);
-          setTotalPages(Math.ceil(data.total_count / PAGE_SIZE));
+          const totalExistingPages = Math.ceil(data.total_count / PAGE_SIZE);
+          // Need to set a maximum of pages as we cannot get more than 1000 results from GH API
+          setTotalPages(
+            totalExistingPages > MAX_TOTAL_PAGES
+              ? MAX_TOTAL_PAGES
+              : totalExistingPages
+          );
           setHasError(false);
         })
         .catch(() => {
