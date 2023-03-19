@@ -17,7 +17,9 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetchRepositories(searchInput, currentPage);
+    if (searchInput) {
+      fetchRepositories(searchInput, currentPage);
+    }
   };
 
   return (
