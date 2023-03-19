@@ -34,7 +34,17 @@ To use the Github Repository Search App, follow these steps:
 
 3. The app will display a list of repositories that match your search query.
 
-4. Click on any repository to view its details.
+4. Click on any repository to go its GitHub page.
+
+## Screenshots
+
+Here are some screenshots of the Github Repository Search App:
+
+![Search Bar](/screenshots/search-bar.png)
+_Search for repositories by typing in the search bar._
+
+![Repository List](/screenshots/repository-list.png)
+_View the list of repositories that match your search query._
 
 ## Technologies Used
 
