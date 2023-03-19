@@ -12,22 +12,22 @@ const MAX_TOTAL_PAGES = 100;
 
 const App = () => {
   const [repositories, setRepositories] = useState<Repository[] | null>(null);
-  const [currentQuery, setCurrentQuery] = useState("");
+  const [currentSearchValue, setCurrentSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasError, setHasError] = useState(false);
   const lastFetchTime = useRef(Date.now());
 
-  const fetchRepositories = (query: string, page: number) => {
+  const fetchRepositories = (searchValue: string, page: number) => {
     if (Date.now() - lastFetchTime.current >= THROTTLE_LIMIT_SECONDS) {
-      fetch(`${GH_REPO_API_URL}?q=${query}&page=${page}&per_page=10`)
+      fetch(`${GH_REPO_API_URL}?q=${searchValue}&page=${page}&per_page=10`)
         .then((response) => {
           if (response.status !== 200) throw Error();
           return response.json();
         })
         .then((data: GHSearchRepositoryResponse) => {
           setRepositories(data.items);
-          setCurrentQuery(query);
+          setCurrentSearchValue(searchValue);
           setCurrentPage(page);
           const totalExistingPages = Math.ceil(data.total_count / PAGE_SIZE);
           // Need to set a maximum of pages as we cannot get more than 1000 results from GH API
@@ -40,7 +40,7 @@ const App = () => {
         })
         .catch(() => {
           setRepositories(null);
-          setCurrentQuery("");
+          setCurrentSearchValue("");
           setCurrentPage(1);
           setTotalPages(1);
           setHasError(true);
@@ -54,7 +54,7 @@ const App = () => {
       <SearchBar fetchRepositories={fetchRepositories} />
       <RepositoryList
         repositories={repositories}
-        currentQuery={currentQuery}
+        currentSearchValue={currentSearchValue}
         currentPage={currentPage}
         totalPages={totalPages}
         hasError={hasError}

@@ -1,28 +1,29 @@
 import "./pagination.css";
 
 type PaginationProps = {
-  currentQuery: string;
+  currentSearchValue: string;
   currentPage: number;
   totalPages: number;
   fetchRepositories: (query: string, page: number) => void;
 };
 
 const Pagination: React.FC<PaginationProps> = (props) => {
-  const { currentQuery, currentPage, totalPages, fetchRepositories } = props;
+  const { currentSearchValue, currentPage, totalPages, fetchRepositories } =
+    props;
 
-  const handlePageChange = (newPage: number) => {
+  const onPageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      fetchRepositories(currentQuery, newPage);
+      fetchRepositories(currentSearchValue, newPage);
     }
   };
 
   return (
     <div className="pagination">
-      <button onClick={() => handlePageChange(1)} disabled={currentPage === 1}>
+      <button onClick={() => onPageChange(1)} disabled={currentPage === 1}>
         &laquo;
       </button>
       <button
-        onClick={() => handlePageChange(currentPage - 1)}
+        onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         &lt;
@@ -31,13 +32,13 @@ const Pagination: React.FC<PaginationProps> = (props) => {
         {currentPage}/{totalPages}
       </span>
       <button
-        onClick={() => handlePageChange(currentPage + 1)}
+        onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         &gt;
       </button>
       <button
-        onClick={() => handlePageChange(totalPages)}
+        onClick={() => onPageChange(totalPages)}
         disabled={currentPage === totalPages}
       >
         &raquo;

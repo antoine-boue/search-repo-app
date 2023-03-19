@@ -4,7 +4,7 @@ import Pagination from "../Pagination/Pagination";
 
 type RepositoryListProps = {
   repositories: Repository[] | null;
-  currentQuery: string;
+  currentSearchValue: string;
   currentPage: number;
   totalPages: number;
   hasError: boolean;
@@ -13,7 +13,7 @@ type RepositoryListProps = {
 
 const RepositoryList: React.FC<RepositoryListProps> = (props) => {
   const {
-    currentQuery,
+    currentSearchValue,
     currentPage,
     totalPages,
     repositories,
@@ -33,7 +33,7 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
 
   const pagination = () => (
     <Pagination
-      currentQuery={currentQuery}
+      currentSearchValue={currentSearchValue}
       currentPage={currentPage}
       totalPages={totalPages}
       fetchRepositories={fetchRepositories}
