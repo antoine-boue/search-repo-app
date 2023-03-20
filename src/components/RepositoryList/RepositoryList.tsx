@@ -7,6 +7,7 @@ type RepositoryListProps = {
   currentSearchValue: string;
   currentPage: number;
   totalPages: number;
+  isLoading: boolean;
   hasError: boolean;
   fetchRepositories: (query: string, page: number) => void;
 };
@@ -16,11 +17,15 @@ const RepositoryList: React.FC<RepositoryListProps> = (props) => {
     currentSearchValue,
     currentPage,
     totalPages,
+    isLoading,
     repositories,
     hasError,
     fetchRepositories,
   } = props;
 
+  if (isLoading) {
+    return <div className="spinner" />;
+  }
   if (hasError) {
     return <p className="error">An error happened, please try again soon</p>;
   }

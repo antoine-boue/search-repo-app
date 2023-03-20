@@ -15,11 +15,13 @@ const App = () => {
   const [currentSearchValue, setCurrentSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const lastFetchTime = useRef(Date.now());
 
   const fetchRepositories = (searchValue: string, page: number) => {
     if (Date.now() - lastFetchTime.current >= THROTTLE_LIMIT_SECONDS) {
+      setIsLoading(true);
       fetch(`${GH_REPO_API_URL}?q=${searchValue}&page=${page}&per_page=10`)
         .then((response) => {
           if (response.status !== 200) throw Error();
@@ -44,7 +46,8 @@ const App = () => {
           setCurrentPage(1);
           setTotalPages(1);
           setHasError(true);
-        });
+        })
+        .finally(() => setIsLoading(false));
       lastFetchTime.current = Date.now();
     }
   };
@@ -57,6 +60,7 @@ const App = () => {
         currentSearchValue={currentSearchValue}
         currentPage={currentPage}
         totalPages={totalPages}
+        isLoading={isLoading}
         hasError={hasError}
         fetchRepositories={fetchRepositories}
       />

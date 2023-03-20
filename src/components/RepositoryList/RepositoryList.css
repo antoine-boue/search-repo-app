@@ -38,3 +38,19 @@
   flex: 0 1 60%;
   text-align: left;
 }
+
+.spinner {
+  margin: 0 auto;
+  border: 4px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #666;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
